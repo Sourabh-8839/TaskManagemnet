@@ -11,7 +11,7 @@ import {
   getUserTaskReducer,
   updateTaskReducer,
 } from './reducer/taskReducer';
-import { LoginReducer, SignInReducer } from './reducer/UserReducer';
+import { LoginReducer, SignUpReducer } from './reducer/UserReducer';
 
 const reducer = combineReducers({
   addTask: addTaskReducer,
@@ -20,7 +20,7 @@ const reducer = combineReducers({
   getAllTask: getAllTaskReducer,
   getTaskByID: getTaskByIDReducer,
   updateTask: updateTaskReducer,
-  Signin: SignInReducer,
+  SignUp: SignUpReducer,
   Login: LoginReducer,
   getTaskByQuery: getTaskQueyByReducer,
 });

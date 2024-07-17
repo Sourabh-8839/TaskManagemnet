@@ -5,8 +5,9 @@ const URL = 'http://localhost:8000/api/v1/user';
 
 export const loginUser = (email, password) => async (dispatch) => {
   try {
-    console.log(email, password);
+    // console.log(email, password);
     dispatch({ type: action.User_LOGIN_REQUEST });
+
     const response = await axios.post(`${URL}/login`, { email, password });
 
     localStorage.setItem('userInfo', JSON.stringify(response.data.data));
@@ -17,13 +18,22 @@ export const loginUser = (email, password) => async (dispatch) => {
   }
 };
 
-export const SignInUser = (data) => async (dispatch) => {
+export const SignUpUser = (data) => async (dispatch) => {
   try {
-    dispatch({ type: action.User_SIGNIN_REQUEST });
+    dispatch({ type: action.User_SIGNUP_REQUEST });
     const response = await axios.post(`${URL}/registerUser`, data);
 
-    dispatch({ type: action.User_SIGNIN_SUCCESS, payload: response.data });
+    dispatch({ type: action.User_SIGNUP_SUCCESS, payload: response.data });
   } catch (error) {
-    dispatch({ type: action.User_SIGNIN_FAIL, payload: error.message });
+    console.log(error);
+    dispatch({ type: action.User_SIGNUP_FAIL, payload: error.message });
+  }
+};
+
+export const LogOutUser = () => async (dispatch) => {
+  try {
+    dispatch({ type: action.USER_LOGOUT_SUCCESS });
+  } catch (error) {
+    console.log(error);
   }
 };

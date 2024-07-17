@@ -21,3 +21,37 @@ class ApiError extends Error {
 }
 
 export { ApiError };
+
+// export default class Util {
+//   /**
+//    * Creates Util class object.
+//    */
+//   constructor() {
+//     /**
+//      * Status code
+//      * @type {number}
+//      */
+//     this.statusCode = null;
+
+//     /**
+//      * Status code Type (eg: Success, Not found etc.)
+//      * @type {String}
+//      */
+//     this.type = null;
+
+//     /**
+//      * Data
+//      * @type {*}
+//      */
+//     this.data = null;
+
+//     /**
+//      * Message
+//      * @type {string}
+//      */
+//     this.message = null;
+//   }
+
+//   /**
+//    * Setting success
+//    * @param {number} statusCode

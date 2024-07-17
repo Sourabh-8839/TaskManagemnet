@@ -3,15 +3,20 @@ import React from 'react';
 import { FaUser, FaUserLock } from 'react-icons/fa';
 import { IoLogOutOutline } from 'react-icons/io5';
 import { useData } from '../../contexts/data.context';
+import { useDispatch } from 'react-redux';
+import { loginUser, LogOutUser } from '../../redux/actions/UserAction';
 
 const UserAvatar = () => {
   const { account, setAccount } = useData();
 
   const user = account.user;
 
+  const dispatch = useDispatch();
+
   const logouthandler = () => {
     localStorage.removeItem('userInfo');
-    setAccount(null);
+    dispatch(LogOutUser());
+    setAccount('');
   };
 
   return (

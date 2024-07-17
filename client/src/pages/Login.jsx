@@ -6,7 +6,7 @@ import {
   Input,
   useToast,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useData } from '../contexts/index.js';
@@ -14,41 +14,63 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/actions/UserAction.js';
 
 const Login = () => {
-  const { account, setAccount } = useData();
+  const { user, error } = useSelector((state) => state.Login);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { user } = useSelector((state) => state.Login);
+  const [Loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-
   const toast = useToast();
-
   const dispatch = useDispatch();
 
-  console.log(user);
-
-  const handleSubmit = (e) => {
-    // const user = await loginUser(email, password);
-
-    e.preventDefault();
-
-    dispatch(loginUser(email, password));
-
-    if (user.status !== 200) {
-      toast({
-        description: 'Invalid email/password ',
-      });
-      return;
-    } else {
-      setAccount(user.data);
-      navigate('/tasks');
-    }
-  };
+  const { account, setAccount } = useData();
 
   useEffect(() => {
-    account && navigate('/tasks');
-  }, [account]);
+    if (user?.data) {
+      toast({
+        title: 'Login Successfully',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+        position: 'bottom',
+      });
+
+      setAccount(user?.data || {});
+      setLoading(false);
+
+      navigate('/tasks');
+    }
+
+    if (error) {
+      toast({
+        title: error,
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+        position: 'bottom',
+      });
+      setLoading(false);
+    }
+  }, [user, error]);
+
+  const handleSubmit = () => {
+    setLoading(true);
+
+    if (!email || !password) {
+      toast({
+        title: 'Please fill all the fields',
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom',
+      });
+      setLoading(false);
+      return;
+    }
+
+    dispatch(loginUser(email, password));
+  };
 
   return (
     <div className='w-full min-h-screen flex items-center justify-center flex-col lg:flex-row bg-[#f3f4f6]'>
@@ -62,7 +84,7 @@ const Login = () => {
               Keep all your credential safe.
             </p>
           </div>
-          <form onSubmit={handleSubmit}>
+          <FormControl isRequired>
             <FormLabel className='my-4'>Email address</FormLabel>
             <Input
               type='email'
@@ -88,13 +110,12 @@ const Login = () => {
               colorScheme='blue'
               rounded={'20px'}
               className='my-5 h-10 w-full rounded-full'
-              // onClick={() => {
-              //   handleSubmit();
-              // }}
+              onClick={handleSubmit}
+              isLoading={Loading}
             >
               Login
             </Button>
-          </form>
+          </FormControl>
           <Button
             type='submit'
             rounded={'20px'}
